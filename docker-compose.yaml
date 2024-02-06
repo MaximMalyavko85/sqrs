@@ -1,0 +1,54 @@
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+      target: development
+    command: yarn start:dev api
+    env_file:
+      - ./apps/api/config/.env.local
+    ports:
+      - '3000:9000'
+    volumes:
+      - .:/usr/src/app
+  users:
+    build:
+      context: .
+      dockerfile: ./apps/users/Dockerfile
+      target: development
+    command: yarn start:dev auth
+    env_file:
+      - ./apps/auth/config/.env.local
+    ports:
+      - '3000:9000'
+    volumes:
+      - .:/usr/src/app
+  payments:
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+      target: development
+    command: yarn start:dev payments
+    env_file:
+      - ./apps/payments/config/.env.local
+    volumes:
+      - .:/usr/src/app
+  notifications:
+    build:
+      context: .
+      dockerfile: ./apps/notifications/Dockerfile
+      target: development
+    command: yarn start:dev notifications
+    env_file:
+      - ./apps/notifications/config/.env.local
+    volumes:
+      - .:/usr/src/app
+  mongo:
+    image: mongo
+    volumes:
+      - './data_mongo:/data/db'
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - 5672:5672
