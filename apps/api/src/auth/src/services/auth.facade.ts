@@ -1,5 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
+import { CreateSessionCommand } from "./commands/create-session/create-session.command";
+import { CreateSessionCommandHandler } from "./commands/create-session/create-session.command-handler";
+import { UpdateSessionCommand } from "./commands/update-session/update-session.command";
+import { UpdateSessionCommandHandler } from "./commands/update-session/update-session.command-handler";
+import { CreateUserDto } from "apps/users/src/dto/create-user.dto";
 
 @Injectable()
 export class AuthFacade {
@@ -10,8 +15,8 @@ export class AuthFacade {
   ) { }
 
   commands = {
-    createToken: () => this.createToken(),
-    updateToken: () => this.updateToken(),
+    createSession: (userDto: CreateUserDto) => this.createSession(userDto),
+    updateToken: (token) => this.updateToken(token),
     deleteToken: () => this.deleteToken(),
   };
 
@@ -21,11 +26,20 @@ export class AuthFacade {
 
   events = {};
 
-  private createToken(){
-    return 'Create token'
+  private createSession(userDto: CreateUserDto){
+    //execute return Promise<any> - its bad. We can use generic for it
+    // execute<InternalValue, returnValue>. Its more readable 
+    return this.commandBus.execute< // dispatch
+      CreateSessionCommand,  // incoming
+      CreateSessionCommandHandler['execute'] // outcoming
+      >(new CreateSessionCommand(userDto));
   }
-  private updateToken(){
-    return 'update token'
+  
+  private updateToken(token){
+    return this.commandBus.execute<
+      UpdateSessionCommand,
+      UpdateSessionCommandHandler['execute']
+      >(new UpdateSessionCommand(token))
   }
   private deleteToken(){
     return 'delete token'

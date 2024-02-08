@@ -1,14 +1,25 @@
 import { Module } from '@nestjs/common';
 import { CommonService } from './common.service';
-//import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from './config/config.module';
 import { ProvidersModule } from './providers/providers.module';
-import { SharedServices } from './shared';
+import { AllexceptionsFilter, SharedServices } from './shared';
+import { APP_FILTER } from '@nestjs/core';
 
 
 @Module({
-  providers: [CommonService],
-  exports: [CommonService],
-  imports: [ConfigModule, ProvidersModule], //DatabaseModule
+  providers: [
+    CommonService,
+    {
+      provide: APP_FILTER,
+      useClass: AllexceptionsFilter
+    }
+  ],
+  exports: [
+    CommonService, 
+   ],
+  imports: [
+    ConfigModule, 
+    ProvidersModule
+  ],
 })
 export class CommonModule {}
