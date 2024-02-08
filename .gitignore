@@ -2,7 +2,7 @@
 /dist
 /node_modules
 data_mongo/
-/docker/pgdata
+pgdata/
 
 # Logs
 logs
