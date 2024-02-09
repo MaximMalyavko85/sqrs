@@ -15,7 +15,7 @@ export class AuthFacade {
   ) { }
 
   commands = {
-    createSession: (userDto: CreateUserDto) => this.createSession(userDto),
+    createUser: (userDto: CreateUserDto) => this.createUser(userDto),
     updateToken: (token) => this.updateToken(token),
     deleteToken: () => this.deleteToken(),
   };
@@ -26,7 +26,7 @@ export class AuthFacade {
 
   events = {};
 
-  private createSession(userDto: CreateUserDto){
+  private createUser(userDto: CreateUserDto){
     //execute return Promise<any> - its bad. We can use generic for it
     // execute<InternalValue, returnValue>. Its more readable 
     return this.commandBus.execute< // dispatch

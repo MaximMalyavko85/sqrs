@@ -1,9 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { UserRepository } from "./user.repository";
 import { IUser, UserAggregate } from "../domain";
-import { FindManyOptions, Repository } from "typeorm";
+import {  Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { UserEntity } from "@app/common/providers/typeorm";
+import { UserEntity } from "@common/providers/typeorm";
 
 // Adapter - this is API for this microservice
 //If nessesary change thomething, we can create new adapter and will include to module

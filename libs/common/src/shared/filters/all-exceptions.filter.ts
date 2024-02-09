@@ -20,11 +20,17 @@ export class AllexceptionsFilter<T> implements ExceptionFilter {
   
   
   private _response(status: number, request: Request, exception: any) {
-    console.log(exception)
+    let messagesArray;
 
-    const messagesArray = exception?.response 
-      ? exception.response.message.split(';') 
-      : exception['message']
+    if (typeof exception?.response?.message === 'string') {
+        messagesArray = exception.response.message.split(';');
+    }
+
+    if (exception.response.message instanceof Array) {
+        messagesArray = exception.response.message
+    }
+
+    console.log(exception)
 
     return {
       statusCode: status,

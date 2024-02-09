@@ -1,6 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsString, IsStrongPassword, Length, ValidateIf, validateSync } from "class-validator";
-import { DomainError } from "@app/common/errors";
-import { IUser } from "./user.interface";
+import { DomainError } from "@common/errors";
+import { IUser } from "./interfaces/user.interface";
 import { ERoles } from "./roles.enum";
 import { EGender } from "./gender.enum";
 import { UserService } from "../services";
@@ -68,6 +68,10 @@ export class UserAggregate extends UserService implements IUser {
 
   public async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10); //10-solt
+  }
+
+  public async checkPassword(password) {
+    return await bcrypt.compare(password, this.password);
   }
 
   public removePassword(){

@@ -2,7 +2,7 @@ import { IsNotEmpty, IsString, IsUUID, validateSync } from "class-validator";
 import { ISessian } from "./session.interface";
 import {v4 as uuidv4} from 'uuid';
 import { SessionService } from "./services";
-import { DomainError } from "@app/common/errors";
+import { DomainError } from "@common/errors";
 import { SessionDto } from "../dto";
 import { CreateUserDto } from "apps/users/src/dto";
 
