@@ -4,8 +4,9 @@ import { IUser } from "./user.interface";
 import { ERoles } from "./roles.enum";
 import { EGender } from "./gender.enum";
 import { UserService } from "../services";
-import { CreateUserDto } from "../dto/create-user.dto";
+import { CreateUserDto } from "../dto";
 import { Escape } from "class-sanitizer";
+import * as bcrypt from 'bcrypt';
 
 export class UserAggregate extends UserService implements IUser {
   @IsString()
@@ -27,7 +28,7 @@ export class UserAggregate extends UserService implements IUser {
   @IsString()
   @IsNotEmpty()
   @IsStrongPassword()
-  @Length(8, 32)
+  @Length(8, 60) //32 -> 60
   @Escape()
   password: string;
 
@@ -50,8 +51,8 @@ export class UserAggregate extends UserService implements IUser {
   }
 
   static create(credsDto: CreateUserDto){
-    
     const _user = new UserAggregate();
+
     Object.assign(_user, credsDto);
     _user.createUserName();
 
@@ -63,5 +64,13 @@ export class UserAggregate extends UserService implements IUser {
 
   private createUserName() {
     this.userName = this.email;
+  }
+
+  public async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10); //10-solt
+  }
+
+  public removePassword(){
+    delete this['password'];
   }
 }

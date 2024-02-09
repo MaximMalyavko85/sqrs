@@ -4,7 +4,7 @@ import { CreateSessionCommand } from "./commands/create-session/create-session.c
 import { CreateSessionCommandHandler } from "./commands/create-session/create-session.command-handler";
 import { UpdateSessionCommand } from "./commands/update-session/update-session.command";
 import { UpdateSessionCommandHandler } from "./commands/update-session/update-session.command-handler";
-import { CreateUserDto } from "apps/users/src/dto/create-user.dto";
+import { CreateUserDto } from "apps/users/src/dto/";
 
 @Injectable()
 export class AuthFacade {

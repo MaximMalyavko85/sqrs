@@ -12,11 +12,11 @@ const IS_PROD: boolean = NODE_ENV === 'prod';
 config({path: join(process.cwd(), 'config', `.env.${NODE_ENV}`)});
 
 const options = (): DataSourceOptions => {
-    const host     = process.env.POSTGRE_HOST
-    const port     = +process.env.POSTGRE_PORT;
-    const database = process.env.POSTGRE_DB;
-    const username = process.env.POSTGRE_USER;
-    const password = process.env.POSTGRE_PASSWORD;
+    const host     = process.env.POSTGRES_HOST
+    const port     = +process.env.POSTGRES_PORT;
+    const database = process.env.POSTGRES_DB;
+    const username = process.env.POSTGRES_USER;
+    const password = process.env.POSTGRES_PASSWORD;
     
     if (!host || !port || !database || !username || !password) throw new Error('Database options was skiped.');
 
@@ -26,10 +26,11 @@ const options = (): DataSourceOptions => {
         database,
         username, 
         password,
-        type                : 'postgres',
-        schema              : 'public',
-        logging             : !IS_PROD,
-        entities            : [UserEntity],
+        type        : 'postgres',
+        schema      : 'public',
+        logging     : !IS_PROD,
+        entities    : [UserEntity],
+        synchronize : true,
         //migrationsRun       : true,
         //migrationsTableName : 'migrations',
         //migrations: [join(process.cwd(), 'migrations', '**', '*{.ts,.js}')],

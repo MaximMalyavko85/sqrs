@@ -22,7 +22,9 @@ export class AllexceptionsFilter<T> implements ExceptionFilter {
   private _response(status: number, request: Request, exception: any) {
     console.log(exception)
 
-    const messagesArray = exception?.response ? exception.response.message : exception['message']
+    const messagesArray = exception?.response 
+      ? exception.response.message.split(';') 
+      : exception['message']
 
     return {
       statusCode: status,

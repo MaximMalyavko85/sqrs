@@ -4,7 +4,7 @@ import {v4 as uuidv4} from 'uuid';
 import { SessionService } from "./services";
 import { DomainError } from "@app/common/errors";
 import { SessionDto } from "../dto";
-import { CreateUserDto } from "apps/users/src/dto/create-user.dto";
+import { CreateUserDto } from "apps/users/src/dto";
 
 
 export class SessionAggregate extends SessionService implements ISessian {

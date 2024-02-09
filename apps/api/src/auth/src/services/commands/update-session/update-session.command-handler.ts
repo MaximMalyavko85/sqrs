@@ -10,14 +10,11 @@ export class UpdateSessionCommandHandler implements ICommandHandler<UpdateSessio
     async execute({post}: any): Promise<any> {
         // const postAggregate=  PostAggregate.create(post);
 
-
-        // const createdPost = await this.postRepository
-        // .save(postAggregate)
-        // .catch(err => {
-        //     throw new BadRequestException(err);
-        // });
-
-        //return postAggregate;
+        //authService.generateAccessToken()
+        //authService.generateRefreshToken()
+        ////authService.validateToken()
+        //const _sessionAggregate = SessionAggregate.create(_userAggregate);
+        
         return {a: "===>UpdateSessionCommandHandler"}
     }
 }

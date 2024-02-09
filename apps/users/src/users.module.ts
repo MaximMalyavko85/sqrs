@@ -6,7 +6,7 @@ import { UserEntity } from '@app/common/providers/typeorm';
 
 @Module({
   imports: [
-    //TypeOrmModule.forFeature([UserEntity])
+    TypeOrmModule.forFeature([UserEntity])
   ],
   controllers: [],
   providers: [

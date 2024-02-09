@@ -15,29 +15,25 @@ export class CreateSessionCommandHandler implements ICommandHandler<CreateSessio
     ) {}
     
     async execute({ session: user } : CreateSessionCommand): Promise<any> {
-        const _userAggregate: IUser = UserAggregate.create(user);
+        const _userAggregate: UserAggregate = UserAggregate.create(user);
         
-        const _createdUser = this.userRepository
-        .save(_userAggregate)
+        const _userExist = await this.userRepository
+        .findOneWhere({email: _userAggregate.email})
         .catch(err => {
             throw new BadRequestException(err);
         });
+        
+        if (_userExist) throw new BadRequestException('User with this email already exist.');
+        
+        await _userAggregate.hashPassword();
+        const _createdUser = await this.userRepository
+            .save(_userAggregate)
+            .catch(err => {
+                throw new BadRequestException(err);
+            });
 
-        //authService.generateAccessToken()
-        //authService.generateRefreshToken()
-        ////authService.validateToken()
-        const _sessionAggregate = SessionAggregate.create(_userAggregate);
-
-        // const createdPost = await this.postRepository
-        // .save(postAggregate)
-        // .catch(err => {
-        //     throw new BadRequestException(err);
-        // });
-
-        console.log(_userAggregate)
-        console.log(_sessionAggregate)
-
-        //return postAggregate;
-        return {a: "===>, CreateSessionCommandHandler"}
+        _createdUser.removePassword();
+                
+        return _createdUser;
     }
 }

@@ -14,10 +14,8 @@ export class DomainError extends Error {
             }
             )});
             
-        super(`Errors: ${_errors.join('; ')}${message ? `. Message: ${message}` : ''}`);
-            
-        console.log("===>", _errors)
-        console.log("----->", this)
+        super(`${_errors.join(';')}`);
+        
         this.name = DomainError.name;
     }
 }

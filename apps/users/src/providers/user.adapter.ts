@@ -13,19 +13,26 @@ export class UserAdapter implements UserRepository {
   private readonly logger = new Logger(UserAdapter.name);
 
   constructor(
-    //@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
+    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
   ) {}
 
-  async save(user: IUser): Promise<any> {
+  async save(newUser: IUser): Promise<UserAggregate> {
+    const createdUser =  await this.userRepository.save(newUser);
 
-    console.log("asdasdasdas", user)
-
-    //return UserAggregate.create();
+    return UserAggregate.create(createdUser);
   }
 
   async findOne(id: string | number): Promise<any> {
 
     //return UserAggregate.create();
+  }
+
+  async findOneWhere(where: object): Promise<any> {
+    const user = await this.userRepository.findOne({ where}) as IUser;
+    
+    if (!user) return;
+
+    return UserAggregate.create(user);
   }
 
   async findAll(pagination: any):Promise <any> { // Promise<[UserAggregate[], number]
