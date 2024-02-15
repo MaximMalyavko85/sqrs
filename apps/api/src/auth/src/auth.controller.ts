@@ -1,15 +1,12 @@
 import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-import { AuthFacade } from './services/auth.facade';
 import { CreateUserDto, LoginUserDto } from '@users/dto';
 import { UserFacade } from '@users/services/user.facade';
 import { UserResponse } from '@users/response';
 import { ApiOkResponse } from '@nestjs/swagger';
-import { UserAggregate } from '@users/domain';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authFacade: AuthFacade,
     private readonly userFacade: UserFacade
   ) {}
 
@@ -37,6 +34,10 @@ export class AuthController {
 
   @Get('refresh')
   refresh(): any {
+    // get refreshToken from header
+    // generate new pair and save to cookies files refreshToken
+    // return accesToken 
+
     //return this.authFacade.commands.updateToken({});
   } //Promise<any>
 

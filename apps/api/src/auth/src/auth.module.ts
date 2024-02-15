@@ -1,25 +1,24 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { AuthFacade } from './services/auth.facade';
-import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
-import { authFacadeFactory } from './providers/auth-facade.factory';
-import { AUTH_COMMAND_HANDLERS } from './services/commands';
 import { UsersModule } from 'apps/users/src/users.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { SessionModel, UserSession } from '@common/providers/mongo/entities/session.entity';
+import { SessionRepository } from './providers/session.repository';
+import { SessionAdapter } from './providers/session.adapter';
+
 
 @Module({
   controllers: [AuthController],
   imports: [
-    CqrsModule,
     UsersModule,
+    MongooseModule.forFeature([{name: UserSession.name, schema: SessionModel}])
   ],
   providers: [
     {
-      provide: AuthFacade,
-      inject: [CommandBus, QueryBus, EventBus],
-      useFactory: authFacadeFactory
-    }, 
-    ...AUTH_COMMAND_HANDLERS
+      provide : SessionRepository,
+      useClass: SessionAdapter,
+    },
   ],
-  exports: [AuthFacade]
+  exports: [SessionRepository]
 })
 export class AuthModule {}

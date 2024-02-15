@@ -26,6 +26,9 @@
       ],
       "@users/*": [
         "apps/users/src/*"
+      ],
+      "@auth/*": [
+        "apps/api/src/auth/src/*"
       ]
     }
   }

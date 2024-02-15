@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsString, IsStrongPassword, Length, ValidateIf, validateSync } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsString, IsStrongPassword, Length, ValidateIf, validateSync } from "class-validator";
 import { DomainError } from "@common/errors";
 import { IUser } from "./interfaces/user.interface";
 import { ERoles } from "./roles.enum";
@@ -9,6 +9,8 @@ import { Escape } from "class-sanitizer";
 import * as bcrypt from 'bcrypt';
 
 export class UserAggregate extends UserService implements IUser {
+  id?: number | null;
+
   @IsString()
   @IsNotEmpty()
   @IsEmail()

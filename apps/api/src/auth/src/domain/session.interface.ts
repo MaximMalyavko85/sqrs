@@ -1,6 +1,6 @@
 
 export interface ISessian {
-  _id: string,
-  userId: string,
+  _id?: string,
+  userId: number,
   refreshToken: string,
 }

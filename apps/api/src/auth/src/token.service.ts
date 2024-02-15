@@ -1,17 +1,17 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto, UserDto } from "apps/users/src/dto";
 import { ConfigService } from '@nestjs/config';
+import { FullUserDto } from "@users/dto/full-user.dto";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class TokenService {
-  
   constructor(
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ){}
 
-  private generateAccessToken(userDto: UserDto){
+  public async generateAccessToken(userDto: Pick<FullUserDto, 'id'|'email'|'role'>){
     return this.jwtService.signAsync(
       {
         userId: userDto.id,
@@ -25,7 +25,7 @@ export class TokenService {
     )
   }
 
-  private generateRefreshToken(userDto: UserDto){
+  public async generateRefreshToken(userDto: FullUserDto){
     return this.jwtService.signAsync(
       {
         userId: userDto.id,
@@ -39,6 +39,8 @@ export class TokenService {
     )
   }
 
-  private validateAccesToken(){}
-  private validateRefreshToken(){}
+  
+
+  public validateAccesToken(){}
+  public validateRefreshToken(){}
 }

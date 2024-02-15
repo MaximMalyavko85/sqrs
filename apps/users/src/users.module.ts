@@ -7,11 +7,16 @@ import { UserFacade } from './services/user.facade';
 import { userFacadeFactory } from './providers/user-facade.factory';
 import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
 import { USER_COMMAND_HANDLERS } from './services/commands';
+import { TokenService } from '@auth/token.service';
+import { SessionRepository, SessionAdapter } from '@auth/providers';
+import { MongooseModule } from '@nestjs/mongoose';
+import { SessionModel, UserSession } from '@common/providers/mongo/entities/session.entity';
 
 @Module({
   imports: [
     CqrsModule,
-    TypeOrmModule.forFeature([UserEntity])
+    TypeOrmModule.forFeature([UserEntity]),
+    MongooseModule.forFeature([{name: UserSession.name, schema: SessionModel}])
   ],
   controllers: [],
   providers: [
@@ -20,11 +25,16 @@ import { USER_COMMAND_HANDLERS } from './services/commands';
       useClass: UserAdapter,
     },
     {
+      provide: SessionRepository,
+      useClass: SessionAdapter,
+    },
+    {
       provide: UserFacade,
       inject: [CommandBus, QueryBus, EventBus],
       useFactory: userFacadeFactory
     },
-    ...USER_COMMAND_HANDLERS
+    ...USER_COMMAND_HANDLERS,
+    TokenService
   ],
   exports: [UserRepository, UserFacade]
 })

@@ -1,25 +1,20 @@
 import { Module } from '@nestjs/common';
-import { CommonService } from './common.service';
-import { ConfigModule } from './config/config.module';
 import { ProvidersModule } from './providers/providers.module';
-import { AllexceptionsFilter, SharedServices } from './shared';
+import { AllexceptionsFilter } from './shared';
 import { APP_FILTER } from '@nestjs/core';
-
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   providers: [
-    CommonService,
     {
-      provide: APP_FILTER,
+      provide : APP_FILTER,
       useClass: AllexceptionsFilter
-    }
+    },
   ],
-  exports: [
-    CommonService, 
-   ],
-  imports: [
-    ConfigModule, 
-    ProvidersModule
+  imports: [ 
+    ProvidersModule,
+    JwtModule.register({ global: true })
   ],
+  exports: []
 })
 export class CommonModule {}

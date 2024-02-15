@@ -22,6 +22,7 @@ export class AllexceptionsFilter<T> implements ExceptionFilter {
   private _response(status: number, request: Request, exception: any) {
     let messagesArray;
 
+    console.log(exception)
     if (typeof exception?.response?.message === 'string') {
         messagesArray = exception.response.message.split(';');
     }
@@ -30,7 +31,6 @@ export class AllexceptionsFilter<T> implements ExceptionFilter {
         messagesArray = exception.response.message
     }
 
-    console.log(exception)
 
     return {
       statusCode: status,

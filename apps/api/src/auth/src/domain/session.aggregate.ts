@@ -1,32 +1,28 @@
-import { IsNotEmpty, IsString, IsUUID, validateSync } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, IsUUID, validateSync } from "class-validator";
 import { ISessian } from "./session.interface";
 import {v4 as uuidv4} from 'uuid';
-import { SessionService } from "./services";
 import { DomainError } from "@common/errors";
-import { SessionDto } from "../dto";
-import { CreateUserDto } from "apps/users/src/dto";
+import { CreateSessionDto } from "../dto";
 
 
-export class SessionAggregate extends SessionService implements ISessian {
+export class SessionAggregate implements ISessian {
   @IsUUID()
-  _id: string = uuidv4();
+  _id?: string = uuidv4();
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  userId: string;
+  userId: number;
 
   @IsString()
   @IsNotEmpty()
   refreshToken: string;
 
-  constructor(userAggregate) {
-    super();
-
-    this.userId = userAggregate.id;
-    this.refreshToken = "asdasdsa";
+  constructor(createSessionDto: CreateSessionDto) {
+    this.userId = createSessionDto.userId;
+    this.refreshToken = createSessionDto.refreshToken;
   }
 
-  static create(userAggregate: CreateUserDto): any{
+  static create(userAggregate: CreateSessionDto): any{
     const _sessian = new SessionAggregate(userAggregate);
     
     const errors = validateSync(_sessian);
