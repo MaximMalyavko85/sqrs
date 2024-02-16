@@ -1,8 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ISessian } from "../domain/session.interface";
+import { ISessian } from "../domain/interfaces";
 import { UserSession } from "@common/providers/mongo/entities/session.entity";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { SessionAggregate } from "@auth/domain/session.aggregate";
 
 @Injectable()
 export class SessionAdapter {
@@ -12,12 +13,17 @@ export class SessionAdapter {
     @InjectModel(UserSession.name) private sessionModel: Model<UserSession>
   ) {}
 
-  async save(newSession: ISessian): Promise<any> {
-    const createdSesion =  await this.sessionModel.create(newSession);
+  async save(newSession: ISessian): Promise<SessionAggregate> {
+    const updatedSesion =  await this.sessionModel.findOneAndReplace(
+      {userId: newSession.userId},
+      {userId: newSession.userId, refreshToken: newSession.refreshToken}
+    );
 
-    console.log(createdSesion)
-
-    // return SessionAggregate.create(createdSesion);
+    if (!updatedSesion) {
+      await this.sessionModel.create(newSession);
+    }
+    
+    return newSession;
   }
 
   async findOne(id: string | number): Promise<any> {
@@ -33,7 +39,8 @@ export class SessionAdapter {
     // return UserAggregate.create(user);
   }
 
-  async delete(id: string | number): Promise<boolean> {
-    return;
+  async delete(userId:number): Promise<boolean> {
+    const deletedSession =  await this.sessionModel.deleteMany({userId: 2});
+    return !!deletedSession.deletedCount;
   }
 }

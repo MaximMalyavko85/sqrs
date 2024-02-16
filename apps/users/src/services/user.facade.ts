@@ -4,6 +4,7 @@ import { CreateUserDto, LoginUserDto } from "../dto";
 import { CreateUserCommand, CreateUserCommandHandler} from "./commands/create-user";
 import { LoginUserCommand } from "./commands/login-user";
 import { LoginCommandHandler } from "./commands/login-user/login-user.command-handler";
+import { LogoutUserCommand, LogoutUserCommandHandler } from "./commands/logout-user";
 
 
 @Injectable()
@@ -17,6 +18,8 @@ export class UserFacade {
   commands = {
     createUser: (userDto: CreateUserDto) => this.createUser(userDto),
     loginUser: (loginUserDto: LoginUserDto) => this.loginUser(loginUserDto),
+    refreshUserData: () => this.refreshUserData(),
+    logout: (userId: number)=> this.logout(userId),
   };
 
   queries = {};
@@ -29,10 +32,19 @@ export class UserFacade {
       >(new CreateUserCommand(userDto));
   }
 
-  private loginUser(loginUserDto: LoginUserDto){
+  private loginUser(loginUserDto: LoginUserDto) {
     return this.commandBus.execute<
       LoginUserCommand,
       LoginCommandHandler['execute']
       >(new LoginUserCommand(loginUserDto));
+  }
+
+  private refreshUserData() {}
+
+  private logout(userId: number) {
+    return this.commandBus.execute<
+      LogoutUserCommand,
+      LogoutUserCommandHandler['execute']
+      >(new LogoutUserCommand(userId));
   }
 }

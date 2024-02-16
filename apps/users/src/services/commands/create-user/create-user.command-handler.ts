@@ -31,7 +31,6 @@ export class CreateUserCommandHandler implements ICommandHandler<CreateUserComma
 
     _createdUser.removePassword();
 
-
     return _createdUser;
   }
 }

@@ -3,7 +3,7 @@ import { EGender } from "@users/domain/gender.enum";
 import { IUserBase } from "@users/domain";
 
 export class UserResponse implements IUserBase, IUser{
-  id: string;
+  id: number;
   email: string;
   firstName: string;
   userName: string;

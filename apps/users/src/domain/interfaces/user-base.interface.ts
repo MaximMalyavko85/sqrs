@@ -1,4 +1,4 @@
 
 export interface IUserBase {
-  id: string;
+  id: number;
 }

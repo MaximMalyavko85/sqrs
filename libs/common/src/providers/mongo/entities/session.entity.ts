@@ -10,7 +10,7 @@ export class UserSession {
   _id: string;
 
   @Prop()
-  userId: string;
+  userId: number;
 
   @Prop()
   refreshToken: string

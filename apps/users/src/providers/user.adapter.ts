@@ -23,8 +23,7 @@ export class UserAdapter implements UserRepository {
   }
 
   async findOne(id: string | number): Promise<any> {
-
-    //return UserAggregate.create();
+   //return UserAggregate.create();
   }
 
   async findOneWhere(where: object): Promise<any> {
