@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { FullUserDto } from "@users/dto/full-user.dto";
@@ -26,7 +26,7 @@ export class TokenService {
     )
   }
 
-  public async generateRefreshToken(userDto: FullUserDto) {
+  public async generateRefreshToken(userDto: Pick<FullUserDto, 'id' | 'email' | 'role'>) {
     return this.jwtService.signAsync(
       {
         userId: userDto.id,
@@ -41,16 +41,28 @@ export class TokenService {
   }
 
   public async validateAccesToken(token: string): Promise<IUserSessian> {
-   return await this.jwtService.verifyAsync(
-      token,
-      { secret: this.configService.get<string>('JWT_ACCESS_SECRET') }
-    );
+    try{
+    const userData = await this.jwtService.verifyAsync(
+        token,
+        { secret: this.configService.get<string>('JWT_ACCESS_SECRET') }
+      );
+
+      return userData;
+    } catch(e){
+      throw new BadRequestException("Token not valid.");
+    }
   }
 
   public async validateRefreshToken(token:string): Promise<IUserSessian> {
-    return await this.jwtService.verifyAsync(
-      token,
-      { secret: this.configService.get<string>('JWT_REFRESH_EXPIRE') }
-    );
+    try{ 
+      const userData =  await this.jwtService.verifyAsync(
+        token,
+        { secret: this.configService.get<string>('JWT_REFRESH_SECRET') }
+      );
+
+      return userData;
+    } catch(e){
+      throw new BadRequestException("Token not valid.");
+    }
    }
 }

@@ -1,10 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
-import { CreateUserDto, LoginUserDto } from "../dto";
-import { CreateUserCommand, CreateUserCommandHandler} from "./commands/create-user";
-import { LoginUserCommand } from "./commands/login-user";
-import { LoginCommandHandler } from "./commands/login-user/login-user.command-handler";
-import { LogoutUserCommand, LogoutUserCommandHandler } from "./commands/logout-user";
+import { CreateUserDto, LoginUserDto, SessionUserDto } from "../dto";
+import { 
+  CreateUserCommand, 
+  LoginUserCommand,
+  LogoutUserCommand,
+  UpdateAuthDataCommand,
+  CreateUserCommandHandler,
+  LogoutUserCommandHandler,
+  UpdateAuthDataCommandHandler,
+} from "./commands";
 
 
 @Injectable()
@@ -18,7 +23,7 @@ export class UserFacade {
   commands = {
     createUser: (userDto: CreateUserDto) => this.createUser(userDto),
     loginUser: (loginUserDto: LoginUserDto) => this.loginUser(loginUserDto),
-    refreshUserData: () => this.refreshUserData(),
+    refreshUserData: (sessionUser: SessionUserDto) => this.refreshUserData(sessionUser),
     logout: (userId: number)=> this.logout(userId),
   };
 
@@ -35,11 +40,16 @@ export class UserFacade {
   private loginUser(loginUserDto: LoginUserDto) {
     return this.commandBus.execute<
       LoginUserCommand,
-      LoginCommandHandler['execute']
+      LogoutUserCommandHandler['execute']
       >(new LoginUserCommand(loginUserDto));
   }
 
-  private refreshUserData() {}
+  private refreshUserData(sessionUser: SessionUserDto) {
+    return this.commandBus.execute<
+      UpdateAuthDataCommand,
+      UpdateAuthDataCommandHandler['execute']
+      >(new UpdateAuthDataCommand(sessionUser))
+  }
 
   private logout(userId: number) {
     return this.commandBus.execute<

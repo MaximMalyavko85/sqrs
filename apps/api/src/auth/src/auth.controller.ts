@@ -41,33 +41,26 @@ export class AuthController {
 
   @Get('refresh')
   @UseGuards(JwtRefreshGuard)
-  refresh(
+  async refresh(
     @Req() request, 
     @Res({ passthrough: true }) response,
-  ): any {
+  ) {
     const { session} = request;
-    const { userId } = session;
+    const {refreshToken, accessToken} = await this.userFacade.commands.refreshUserData(session) as any;
 
-    console.log(session)
+    const domenPath: string = "/api/v1/auth";
 
-    // generate new pair and save to cookies files refreshToken
-    // return accesToken 
+    response.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      path    : domenPath,
+      domain  : this.configService.get<string>("JWT_DOMEN"),
+      maxAge  : this.configService.get<number>('JWT_REFRESH_EXPIRE_COOKIES'),
+    });
 
-    //return this.authFacade.commands.updateToken({});
-
-    // const domenPath: string = "/api/v1/auth";
-
-    // response.cookie('jwt', tokens.refreshToken, {
-    //     httpOnly: true,
-    //     path: domenPath,
-    //     domain: this.configService.get<string>("JWT_DOMEN"),
-    //     maxAge: this.configService.get<number>('JWT_REFRESH_EXPIRE_COOKIES'),
-    // });
-    // return {
-    //     user, 
-    //     accessToken: tokens.accessToken,
-    // };
-  } //Promise<any>
+    return {
+      accessToken
+    };
+  }
 
   @Post('logout')
   @HttpCode(204)
@@ -90,6 +83,9 @@ export class AuthController {
     return;
   }
 
+  @UseGuards(JwtAccessGuard)
   @Get('ping')
-  ping(): any {} //Promise<any>
+  ping(): string {
+    return 'pong';
+  } 
 }

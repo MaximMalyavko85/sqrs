@@ -26,17 +26,14 @@ export class SessionAdapter {
     return newSession;
   }
 
-  async findOne(id: string | number): Promise<any> {
+  async findOne(id: string | number): Promise<any> {}
 
-    //return UserAggregate.create();
-  }
+  async findOneWhere(where: object): Promise<SessionAggregate> {
+    const session = await this.sessionModel.findOne(where);
 
-  async findOneWhere(where: object): Promise<any> {
-    // const user = await this.userRepository.findOne({ where}) as IUser;
-    
-    // if (!user) return;
+    if (!session) return;
 
-    // return UserAggregate.create(user);
+    return SessionAggregate.create(session);
   }
 
   async delete(userId:number): Promise<boolean> {
