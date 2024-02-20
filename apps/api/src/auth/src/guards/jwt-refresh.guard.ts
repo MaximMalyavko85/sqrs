@@ -25,8 +25,6 @@ export class JwtRefreshGuard implements CanActivate {
       throw new UnauthorizedException("Unauthorized request");
     }
 
-    console.log("--->0", token)
-
     const refreshTokenExist = await this.sessionRepository.findOneWhere({ refreshToken: token });
 
     if (!refreshTokenExist) {

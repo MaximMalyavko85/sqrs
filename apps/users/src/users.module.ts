@@ -11,6 +11,8 @@ import { TokenService } from '@auth/token.service';
 import { SessionRepository, SessionAdapter } from '@auth/providers';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SessionModel, UserSession } from '@common/providers/mongo/entities/session.entity';
+import { UsersController } from './users.controller';
+import { QUERYS_HANDLERS } from './services/queries';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { SessionModel, UserSession } from '@common/providers/mongo/entities/sess
     TypeOrmModule.forFeature([UserEntity]),
     MongooseModule.forFeature([{name: UserSession.name, schema: SessionModel}])
   ],
-  controllers: [],
+  controllers: [UsersController],
   providers: [
     {
       provide: UserRepository,
@@ -34,6 +36,7 @@ import { SessionModel, UserSession } from '@common/providers/mongo/entities/sess
       useFactory: userFacadeFactory
     },
     ...USER_COMMAND_HANDLERS,
+    ...QUERYS_HANDLERS,
     TokenService
   ],
   exports: [UserRepository, UserFacade]

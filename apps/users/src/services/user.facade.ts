@@ -10,6 +10,9 @@ import {
   LogoutUserCommandHandler,
   UpdateAuthDataCommandHandler,
 } from "./commands";
+import { GetUsersQuery } from "./queries/get-users/get-users.query";
+import { GetUsersQueryHandler } from "./queries/get-users/get-users.query-handler";
+import { PaginationDto } from "@common/shared/dtos";
 
 
 @Injectable()
@@ -27,7 +30,10 @@ export class UserFacade {
     logout         : (userId: number)=> this.logout(userId),
   };
 
-  queries = {};
+  queries = {
+    getAllUsers: (pagination: PaginationDto)=> this.getAllUsers(pagination),
+    getOneUser : (userId: number) => this.getOneUser(userId)
+  };
   events = {};
 
   private createUser(userDto: CreateUserDto){
@@ -57,4 +63,13 @@ export class UserFacade {
       LogoutUserCommandHandler['execute']
       >(new LogoutUserCommand(userId));
   }
+
+  private getAllUsers(pagination: PaginationDto) {
+    return this.queryBus.execute<
+      GetUsersQuery,
+      GetUsersQueryHandler['execute']
+      >(new GetUsersQuery(pagination));
+  }
+
+  private getOneUser(id: number) {}
 }
