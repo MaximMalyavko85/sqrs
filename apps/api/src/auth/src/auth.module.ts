@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { SessionModel, UserSession } from '@common/providers/mongo/entities/session.entity';
 import { SessionRepository } from './providers/session.repository';
 import { SessionAdapter } from './providers/session.adapter';
-import { JwtAccessGuard } from './guards/jwt-acces.guard';
 import { TokenService } from './token.service';
 
 

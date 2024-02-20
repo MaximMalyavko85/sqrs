@@ -16,15 +16,15 @@ import {
 export class UserFacade {
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
-    private readonly eventBus: EventBus,
-  ) { }
+    private readonly queryBus  : QueryBus,
+    private readonly eventBus  : EventBus,
+  ) {}
 
   commands = {
-    createUser: (userDto: CreateUserDto) => this.createUser(userDto),
-    loginUser: (loginUserDto: LoginUserDto) => this.loginUser(loginUserDto),
+    createUser     : (userDto: CreateUserDto) => this.createUser(userDto),
+    loginUser      : (loginUserDto: LoginUserDto) => this.loginUser(loginUserDto),
     refreshUserData: (sessionUser: SessionUserDto) => this.refreshUserData(sessionUser),
-    logout: (userId: number)=> this.logout(userId),
+    logout         : (userId: number)=> this.logout(userId),
   };
 
   queries = {};
