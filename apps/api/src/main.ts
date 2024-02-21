@@ -37,15 +37,7 @@ async function bootstrap() {
     .build()
   );
   
-  SwaggerModule.setup(SWAGGER_URL, app, document, {
-    swaggerOptions: {
-      requestInterceptor: (req) => {
-        req.headers['swagger-request'] = "swagger";
-
-        return req;
-      },
-    },
-  });
+  SwaggerModule.setup(SWAGGER_URL, app, document);
 
   await app.listen(PORT, ()=> {
     Logger.log(`[INFO] The server started on http://localhost:${PORT} port`, 'Main');

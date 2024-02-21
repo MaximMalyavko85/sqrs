@@ -4,7 +4,7 @@ import { IUser } from "./interfaces/user.interface";
 import { ERoles } from "./roles.enum";
 import { EGender } from "./gender.enum";
 import { UserService } from "../services";
-import { CreateUserDto } from "../dto";
+import { CreateUserDto, UpdateUserDto } from "../dto";
 import { Escape } from "class-sanitizer";
 import * as bcrypt from 'bcrypt';
 
@@ -27,6 +27,7 @@ export class UserAggregate extends UserService implements IUser {
   @Escape()
   lastName: string;
 
+  @ValidateIf(o => 'password' in o)
   @IsString()
   @IsNotEmpty()
   @IsStrongPassword()
@@ -52,11 +53,14 @@ export class UserAggregate extends UserService implements IUser {
     super();
   }
 
-  static create(credsDto: CreateUserDto){
+  static create(credsDto: CreateUserDto | UpdateUserDto){
     const _user = new UserAggregate();
 
     Object.assign(_user, credsDto);
-    _user.createUserName();
+    
+    if (!_user.userName) {
+      _user.createUserName();
+    }
 
     const errors = validateSync(_user);
     if (!!errors.length) throw new DomainError(errors, 'User not valid.');

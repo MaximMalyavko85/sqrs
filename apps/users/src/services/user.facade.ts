@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
-import { CreateUserDto, LoginUserDto, SessionUserDto } from "../dto";
+import { CreateUserDto, LoginUserDto, SessionUserDto, UpdateUserDto } from "../dto";
 import { 
   CreateUserCommand, 
   LoginUserCommand,
@@ -9,10 +9,13 @@ import {
   CreateUserCommandHandler,
   LogoutUserCommandHandler,
   UpdateAuthDataCommandHandler,
+  UpdateUserCommand,
+  UpdateUserCommandHandler,
 } from "./commands";
 import { GetUsersQuery } from "./queries/get-users/get-users.query";
 import { GetUsersQueryHandler } from "./queries/get-users/get-users.query-handler";
 import { PaginationDto } from "@common/shared/dtos";
+import { GetUserQuery } from "./queries/get-user/get-user.query";
 
 
 @Injectable()
@@ -27,7 +30,8 @@ export class UserFacade {
     createUser     : (userDto: CreateUserDto) => this.createUser(userDto),
     loginUser      : (loginUserDto: LoginUserDto) => this.loginUser(loginUserDto),
     refreshUserData: (sessionUser: SessionUserDto) => this.refreshUserData(sessionUser),
-    logout         : (userId: number)=> this.logout(userId),
+    logout         : (userId: number) => this.logout(userId),
+    updateOneUser  : (userId: number, updatedUserDto: UpdateUserDto) => this.updateOneUser(userId, updatedUserDto)
   };
 
   queries = {
@@ -71,5 +75,17 @@ export class UserFacade {
       >(new GetUsersQuery(pagination));
   }
 
-  private getOneUser(id: number) {}
+  private getOneUser(userId: number) {
+    return this.queryBus.execute<
+    GetUserQuery,
+    GetUsersQueryHandler['execute']
+    >(new GetUserQuery(userId));
+  }
+
+  private updateOneUser(userId: number, updateUserDto: UpdateUserDto) {
+    return this.commandBus.execute<
+    UpdateUserCommand,
+    UpdateUserCommandHandler['execute']
+    >(new UpdateUserCommand(userId, updateUserDto));
+  }
 }

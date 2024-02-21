@@ -4,6 +4,7 @@ import { ERoles, IUser, UserAggregate } from "../domain";
 import {  FindManyOptions, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "@common/providers/typeorm";
+import { UpdateUserDto } from "@users/dto";
 
 // Adapter - this is API for this microservice
 //If nessesary change thomething, we can create new adapter and will include to module
@@ -17,16 +18,14 @@ export class UserAdapter implements UserRepository {
   ) {}
 
   async save(newUser: IUser): Promise<UserAggregate> {
-    const userWithUsersRole = {...newUser, role: ERoles.user};
-
-    const createdUser =  await this.userRepository.save(userWithUsersRole);
+    const createdUser =  await this.userRepository.save(newUser);
 
     return UserAggregate.create(createdUser);
   }
 
   async findOne(id: string | number): Promise<any> {}
 
-  async findOneWhere(where: object): Promise<any> {
+  async findOneWhere(where: object): Promise<UserAggregate> {
     const user = await this.userRepository.findOne({ where}) as IUser;
     
     if (!user) return;
@@ -65,6 +64,21 @@ export class UserAdapter implements UserRepository {
         }), 
         count: resp[1]
       } as {data: UserAggregate[], count: number};
+  }
+
+  async updateUser(userId: number, updatedUserDto: UpdateUserDto): Promise<UserAggregate> {
+    const existedUser = await this.findOneWhere({ id:userId });
+  
+    const userWithMappedNotReadbleProperty = {
+      ...updatedUserDto, 
+      role: existedUser.role,
+      email: existedUser.email,
+      password: existedUser.password,
+    }
+
+    await this.userRepository.update(userId, userWithMappedNotReadbleProperty);
+
+    return UserAggregate.create({...userWithMappedNotReadbleProperty, id: userId});
   }
 
   async delete(id: string | number): Promise<boolean> {

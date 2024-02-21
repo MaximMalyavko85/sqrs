@@ -2,6 +2,7 @@ import { CreateUserCommandHandler } from "./create-user";
 import { LoginCommandHandler } from "./login-user/login-user.command-handler";
 import { LogoutUserCommandHandler } from "./logout-user";
 import { UpdateAuthDataCommandHandler } from "./update-auth-data";
+import { UpdateUserCommandHandler } from "./update-user";
 
 export * from './create-user';
 export * from './delete-user';
@@ -15,5 +16,6 @@ export const USER_COMMAND_HANDLERS = [
   LogoutUserCommandHandler,
   CreateUserCommandHandler,
   UpdateAuthDataCommandHandler,
+  UpdateUserCommandHandler,
 ]
 
