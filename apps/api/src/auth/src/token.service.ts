@@ -1,9 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { FullUserDto } from "@users/dto/full-user.dto";
-import { InjectModel } from "@nestjs/mongoose";
 import { IUserSessian } from "./domain/interfaces";
+import { BadRequestException, Injectable } from "@nestjs/common";
 
 @Injectable()
 export class TokenService {

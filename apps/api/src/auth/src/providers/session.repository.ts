@@ -1,4 +1,4 @@
-import { SessionAggregate } from "../domain/session.aggregate";
+import { SessionAggregate } from "../domain";
 import { ISessian } from "../domain/interfaces";
 
 export abstract class SessionRepository {

@@ -1,11 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards} from '@nestjs/common';
-import { CreateUserDto, LoginUserDto } from '@users/dto';
-import { UserFacade } from '@users/services/user.facade';
 import { ConfigService } from '@nestjs/config';
+import { UserFacade } from '@users/services/user.facade';
+import { CreateUserDto, LoginUserDto } from '@users/dto';
 import { JwtRefreshGuard, JwtAccessGuard } from './guards';
-import { ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AccessToken, UserResponse } from '@users/response';
-import { UserLoginResponse } from '@users/response/user-login.response';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AccessToken, UserResponse, UserLoginResponse } from '@users/response';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards} from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -51,9 +50,9 @@ export class AuthController {
   @ApiTags('AUTH')
   @ApiOperation({summary: 'Refresh tokens'})
   @ApiOkResponse({type: AccessToken, status: HttpStatus.OK})
-  @HttpCode(HttpStatus.OK)
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
+  @HttpCode(HttpStatus.OK)
   async refresh(
     @Req() request, 
     @Res({ passthrough: true }) response,
@@ -78,9 +77,9 @@ export class AuthController {
   @ApiTags('AUTH')
   @ApiOperation({summary: 'Logout user'})
   @ApiOkResponse({type: Boolean, status: HttpStatus.NO_CONTENT})
+  @UseGuards(JwtAccessGuard)
   @Post('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(JwtAccessGuard)
   async logout(
     @Req() request, 
     @Res({ passthrough: true }) response,
@@ -102,9 +101,10 @@ export class AuthController {
 
   @ApiTags('AUTH')
   @ApiOperation({summary: 'ping/pong (for tests)'})
+  @ApiOkResponse({type: String, status: HttpStatus.NO_CONTENT})
   @UseGuards(JwtAccessGuard)
   @Get('ping')
-  @ApiOkResponse({type: String, status: HttpStatus.NO_CONTENT})
+  @HttpCode(HttpStatus.NO_CONTENT)
   ping(): string {
     return 'pong';
   } 

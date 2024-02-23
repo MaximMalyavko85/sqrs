@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ProvidersModule } from './providers/providers.module';
-import { AllexceptionsFilter } from './shared';
-import { APP_FILTER } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import { APP_FILTER } from '@nestjs/core';
+import { AllexceptionsFilter } from './shared';
+import { ProvidersModule } from './providers/providers.module';
 
 @Module({
   providers: [

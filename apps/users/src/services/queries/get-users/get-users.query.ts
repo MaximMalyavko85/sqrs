@@ -1,4 +1,5 @@
+import { PaginationDto } from "@common/shared/dtos";
 
 export class GetUsersQuery {
-  constructor( public readonly pagination: any){}
+  constructor( public readonly pagination: PaginationDto){}
 }

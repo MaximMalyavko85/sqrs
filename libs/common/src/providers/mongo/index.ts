@@ -1,1 +1,1 @@
-export * from './mongo.config';
+export * from './entities/session.entity';

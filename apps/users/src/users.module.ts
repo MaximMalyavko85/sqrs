@@ -1,18 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UserRepository } from './providers/user.repository';
-import { UserAdapter } from './providers/user.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '@common/providers/typeorm';
-import { UserFacade } from './services/user.facade';
-import { userFacadeFactory } from './providers/user-facade.factory';
-import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
-import { USER_COMMAND_HANDLERS } from './services/commands';
-import { TokenService } from '@auth/token.service';
-import { SessionRepository, SessionAdapter } from '@auth/providers';
 import { MongooseModule } from '@nestjs/mongoose';
-import { SessionModel, UserSession } from '@common/providers/mongo/entities/session.entity';
+import { TokenService } from '@auth/token.service';
+import { UserFacade } from './services/user.facade';
 import { UsersController } from './users.controller';
 import { QUERYS_HANDLERS } from './services/queries';
+import { UserEntity } from '@common/providers/typeorm';
+import { USER_COMMAND_HANDLERS } from './services/commands';
+import { SessionModel, UserSession } from '@common/providers/mongo';
+import { SessionRepository, SessionAdapter } from '@auth/providers';
+import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
+import { UserAdapter, UserRepository, userFacadeFactory } from './providers';
 
 @Module({
   imports: [

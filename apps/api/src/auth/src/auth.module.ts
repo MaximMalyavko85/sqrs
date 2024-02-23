@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { UsersModule } from 'apps/users/src/users.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { SessionModel, UserSession } from '@common/providers/mongo/entities/session.entity';
-import { SessionRepository } from './providers/session.repository';
-import { SessionAdapter } from './providers/session.adapter';
 import { TokenService } from './token.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AuthController } from './auth.controller';
+import { UsersModule } from '@users/users.module';
+import { SessionModel, UserSession } from '@common/providers/mongo';
+import { SessionAdapter, SessionRepository } from './providers';
 
 
 @Module({

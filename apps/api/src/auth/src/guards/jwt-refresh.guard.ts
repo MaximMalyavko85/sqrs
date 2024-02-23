@@ -1,8 +1,8 @@
-import { IUserSessian } from "@auth/domain/interfaces";
-import { SessionRepository } from "@auth/providers";
-import { TokenService } from "@auth/token.service";
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Request } from 'express';
+import { TokenService } from "@auth/token.service";
+import { SessionRepository } from "@auth/providers";
+import { IUserSessian } from "@auth/domain/interfaces";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 
 @Injectable()
 export class JwtRefreshGuard implements CanActivate {

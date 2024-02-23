@@ -1,9 +1,9 @@
+import { SessionAggregate } from "@auth/domain";
+import { IUserAuth } from "@users/domain";
+import { TokenService } from "@auth/token.service";
+import { SessionRepository } from "@auth/providers";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { UpdateAuthDataCommand } from "./update-auth-data.command";
-import { SessionRepository } from "@auth/providers";
-import { TokenService } from "@auth/token.service";
-import { IUserAuth } from "@users/domain";
-import { SessionAggregate } from "@auth/domain/session.aggregate";
 
 
 @CommandHandler(UpdateAuthDataCommand)

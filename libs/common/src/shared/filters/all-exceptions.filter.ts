@@ -1,5 +1,5 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Request } from 'express';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 
 @Catch()
 export class AllexceptionsFilter<T> implements ExceptionFilter {
@@ -33,14 +33,14 @@ export class AllexceptionsFilter<T> implements ExceptionFilter {
 
 
     return {
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request?.url,
-      method: request?.method,
-      params: request?.params,
-      query: request?.query, 
-      exception: {
-        name: exception['name'],
+      statusCode : status,
+      timestamp  : new Date().toISOString(),
+      path       : request?.url,
+      method     : request?.method,
+      params     : request?.params,
+      query      : request?.query, 
+      exception  : {
+        name   : exception['name'],
         message: messagesArray,
       }
     }

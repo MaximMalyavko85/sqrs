@@ -2,10 +2,10 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { LoginUserCommand } from "./login-user.command";
 import { IUserAuth, UserAggregate } from "@users/domain";
 import { BadRequestException } from "@nestjs/common";
-import { UserRepository } from "@users/providers/user.repository";
+import { UserRepository } from "@users/providers";
 import { TokenService } from "@auth/token.service";
-import { SessionAggregate } from "@auth/domain/session.aggregate";
-import { SessionRepository } from "@auth/providers/session.repository";
+import { SessionAggregate } from "@auth/domain";
+import { SessionRepository } from "@auth/providers";
 
 @CommandHandler(LoginUserCommand)
 export class LoginCommandHandler implements ICommandHandler<LoginUserCommand, IUserAuth> {

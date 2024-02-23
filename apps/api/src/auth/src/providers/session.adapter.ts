@@ -1,9 +1,9 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { ISessian } from "../domain/interfaces";
-import { UserSession } from "@common/providers/mongo/entities/session.entity";
-import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { SessionAggregate } from "@auth/domain/session.aggregate";
+import { InjectModel } from "@nestjs/mongoose";
+import { ISessian } from "../domain/interfaces";
+import { Injectable, Logger } from "@nestjs/common";
+import { UserSession } from "@common/providers/mongo";
+import { SessionAggregate } from "../domain";
 
 @Injectable()
 export class SessionAdapter {
@@ -38,6 +38,7 @@ export class SessionAdapter {
 
   async delete(userId:number): Promise<boolean> {
     const deletedSession =  await this.sessionModel.deleteMany({userId: 2});
+    
     return !!deletedSession.deletedCount;
   }
 }

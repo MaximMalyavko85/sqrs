@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
+import { PaginationDto } from "@common/shared/dtos";
 import { CommandBus, EventBus, QueryBus } from "@nestjs/cqrs";
 import { CreateUserDto, LoginUserDto, SessionUserDto, UpdateUserDto } from "../dto";
+import { GetUserQueryHandler, GetUserQuery, GetUsersQuery, GetUsersQueryHandler } from "./queries";
 import { 
   CreateUserCommand, 
   LoginUserCommand,
@@ -11,11 +13,9 @@ import {
   UpdateAuthDataCommandHandler,
   UpdateUserCommand,
   UpdateUserCommandHandler,
+  DeleteUserCommand,
+  DeleteUserCommandHandler,
 } from "./commands";
-import { GetUsersQuery } from "./queries/get-users/get-users.query";
-import { GetUsersQueryHandler } from "./queries/get-users/get-users.query-handler";
-import { PaginationDto } from "@common/shared/dtos";
-import { GetUserQuery } from "./queries/get-user/get-user.query";
 
 
 @Injectable()
@@ -27,17 +27,19 @@ export class UserFacade {
   ) {}
 
   commands = {
-    createUser     : (userDto: CreateUserDto) => this.createUser(userDto),
-    loginUser      : (loginUserDto: LoginUserDto) => this.loginUser(loginUserDto),
-    refreshUserData: (sessionUser: SessionUserDto) => this.refreshUserData(sessionUser),
-    logout         : (userId: number) => this.logout(userId),
-    updateOneUser  : (userId: number, updatedUserDto: UpdateUserDto) => this.updateOneUser(userId, updatedUserDto)
+    logout          : (userId: number) => this.logout(userId),
+    createUser      : (userDto: CreateUserDto) => this.createUser(userDto),
+    loginUser       : (loginUserDto: LoginUserDto) => this.loginUser(loginUserDto),
+    refreshUserData : (sessionUser: SessionUserDto) => this.refreshUserData(sessionUser),
+    deleteUser      : (userid: number) => this.deleteOneUser(userid),
+    updateOneUser   : (userId: number, updatedUserDto: UpdateUserDto) => this.updateOneUser(userId, updatedUserDto),
   };
 
   queries = {
-    getAllUsers: (pagination: PaginationDto)=> this.getAllUsers(pagination),
-    getOneUser : (userId: number) => this.getOneUser(userId)
+    getAllUsers : (pagination: PaginationDto)=> this.getAllUsers(pagination),
+    getOneUser  : (userId: number) => this.getOneUser(userId)
   };
+
   events = {};
 
   private createUser(userDto: CreateUserDto){
@@ -77,15 +79,22 @@ export class UserFacade {
 
   private getOneUser(userId: number) {
     return this.queryBus.execute<
-    GetUserQuery,
-    GetUsersQueryHandler['execute']
-    >(new GetUserQuery(userId));
+      GetUserQuery,
+      GetUserQueryHandler['execute']
+      >(new GetUserQuery(userId));
   }
 
   private updateOneUser(userId: number, updateUserDto: UpdateUserDto) {
     return this.commandBus.execute<
-    UpdateUserCommand,
-    UpdateUserCommandHandler['execute']
-    >(new UpdateUserCommand(userId, updateUserDto));
+      UpdateUserCommand,
+      UpdateUserCommandHandler['execute']
+      >(new UpdateUserCommand(userId, updateUserDto));
+  }
+
+  private deleteOneUser(userId: number) {
+    return this.commandBus.execute<
+      DeleteUserCommand,
+      DeleteUserCommandHandler['execute']
+      >(new DeleteUserCommand(userId));
   }
 }

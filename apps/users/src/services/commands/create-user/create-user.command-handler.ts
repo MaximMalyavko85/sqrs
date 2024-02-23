@@ -1,8 +1,8 @@
-import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { ERoles, UserAggregate } from "@users/domain";
-import { UserRepository } from "@users/providers/user.repository";
+import { UserRepository } from "@users/providers";
 import { BadRequestException } from "@nestjs/common";
+import { ERoles, UserAggregate } from "@users/domain";
 import { CreateUserCommand } from "./create-user.command";
+import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
 
 @CommandHandler(CreateUserCommand)

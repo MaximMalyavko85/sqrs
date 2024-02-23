@@ -1,17 +1,17 @@
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { ApiModule } from './api.module';
+import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import * as cookieParser from 'cookie-parser';
-import { NestFactory } from '@nestjs/core';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { ApiModule } from './api.module';
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { SecuritySchemeObject } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
 
 const whitelist = ['http://localhost:3001'];
 
 const CORS_SETTINGS = {
-  allowedHeaders: ['content-type'],
-  origin        : whitelist,
-  credentials   : true,
+  allowedHeaders : ['content-type'],
+  origin         : whitelist,
+  credentials    : true,
 };
 
 async function bootstrap() {

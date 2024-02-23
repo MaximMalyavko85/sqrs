@@ -1,8 +1,8 @@
-import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
-import { GetUserQuery } from "./get-user.query";
 import { UserAggregate } from "@users/domain";
+import { GetUserQuery } from "./get-user.query";
 import { UserRepository } from "@users/providers";
 import { BadRequestException } from "@nestjs/common";
+import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 @QueryHandler(GetUserQuery)
 export class GetUserQueryHandler implements IQueryHandler<GetUserQuery, UserAggregate> {
@@ -16,6 +16,10 @@ export class GetUserQueryHandler implements IQueryHandler<GetUserQuery, UserAggr
       .catch(err => {
         throw new BadRequestException(err);
       });
+
+      if (!_userAggregate) {
+        throw new BadRequestException("User with this Id isn't exist");
+      }
 
       _userAggregate.removePassword();
 

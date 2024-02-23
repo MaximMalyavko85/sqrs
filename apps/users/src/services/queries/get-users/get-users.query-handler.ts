@@ -1,9 +1,8 @@
-import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
-import { GetUsersQuery } from "./get-users.query";
-import { UserAggregate } from "@users/domain";
-import { number } from "joi";
 import { Logger } from "@nestjs/common";
+import { UserAggregate } from "@users/domain";
+import { GetUsersQuery } from "./get-users.query";
 import { UserRepository } from "@users/providers";
+import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 
 @QueryHandler(GetUsersQuery)

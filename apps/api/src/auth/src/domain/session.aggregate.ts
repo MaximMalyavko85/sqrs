@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsNumber, IsString, IsUUID, validateSync } from "class-validator";
-import { ISessian } from "./interfaces";
 import {v4 as uuidv4} from 'uuid';
-import { DomainError } from "@common/errors";
+import { ISessian } from "./interfaces";
 import { CreateSessionDto } from "../dto";
+import { DomainError } from "@common/errors";
+import { IsNotEmpty, IsNumber, IsString, IsUUID, validateSync } from "class-validator";
 
 
 export class SessionAggregate implements ISessian {

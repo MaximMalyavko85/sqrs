@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CommonModule, SharedServices } from '@app/common';
 import { AuthModule } from './auth/src/auth.module';
+import { CommonModule, SharedServices } from '@app/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
@@ -28,12 +28,6 @@ import * as Joi from 'joi';
         POSTGRES_DB               : Joi.string().required(),
         POSTGRES_USER             : Joi.string().required(),
         POSTGRES_PASSWORD         : Joi.string().required(),
-        
-        //HOST: Joi.string().required(),
-        //GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
-        //GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
-        //GOOGLE_OAUTH_CLIENT_REFRESH_TOKEN: Joi.string().required(),
-        //SMTP_USER: Joi.string().required()
       })
     })
 ]
