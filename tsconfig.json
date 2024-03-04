@@ -28,7 +28,7 @@
         "libs/common/src/*"
       ],
       "@users/*": [
-        "apps/users/src/*"
+        "apps/api/src/users/src/*"
       ],
       "@auth/*": [
         "apps/api/src/auth/src/*"

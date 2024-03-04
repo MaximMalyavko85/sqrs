@@ -101,10 +101,10 @@ export class AuthController {
 
   @ApiTags('AUTH')
   @ApiOperation({summary: 'ping/pong (for tests)'})
-  @ApiOkResponse({type: String, status: HttpStatus.NO_CONTENT})
+  @ApiOkResponse({type: String, status: HttpStatus.OK})
   @UseGuards(JwtAccessGuard)
   @Get('ping')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   ping(): string {
     return 'pong';
   } 
