@@ -5,6 +5,6 @@ export class SharedServices {
   constructor(){}
   
   static getConfigBaseOnMode() {
-    return `config/.env.dev.${process.env?.NODE_ENV || 'local'}`
+    return `../../config/.env.${process.env?.NODE_ENV || 'local'}`
   }
 }

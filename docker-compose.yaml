@@ -5,7 +5,7 @@ services:
     image: mongo
     container_name: ms_mongo
     volumes:
-      - './data_mongo:/data/db'
+      - './docker/data_mongo:/data/db'
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
@@ -24,7 +24,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes: 
-      - .:/var/lib/postgresql/data
+      - ./docker:/var/lib/postgresql/data
     ports:
       - '${POSTGRES_PORT}:5432'
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
     image: rabbitmq
     container_name: ms_rabbitmq
     ports:
-      - 5672:5672
+      - ${RABBIT_PORT}:5672
   api-auth:
     image: api-auth
     container_name: api-auth
@@ -40,9 +40,27 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
       target: development
-    command: pnpm run start:dev
-    env_file:
-      - config/.env.dev.local
+    command: pnpm run start:dev api
     ports:
-      - '9000:9000'
+      - '${API_AUTH_PORT}:9000'
+  notifications:
+    image: api-notifications
+    container_name: api-notifications
+    build:
+      context: .
+      dockerfile: apps/notifications/Dockerfile
+      target: development
+    command: pnpm run start:dev notifications
+    ports:
+      - '${API_NOTIFICATIONS_PORT}:9001'
+  payments:
+    image: api-payments
+    container_name: api-payments
+    build:
+      context: .
+      dockerfile: apps/payments/Dockerfile
+      target: development
+    command: pnpm run start:dev payments
+    ports:
+      - '${API_PAYMENTS_PORT}:9002'
 

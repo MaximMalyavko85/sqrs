@@ -3,6 +3,7 @@ import { AuthModule } from './auth/src/auth.module';
 import { CommonModule, SharedServices } from '@app/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { join } from "path";
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import * as Joi from 'joi';
     AuthModule,
     NestConfigModule.forRoot({
       isGlobal        : true,
-      envFilePath     : SharedServices.getConfigBaseOnMode(),
+      envFilePath     : join(process.cwd(), 'apps', 'api', 'config', `.env.${process.env?.NODE_ENV || 'local'}`),
       validationSchema: Joi.object({
         HTTP_PORT                 : Joi.number().required(),
         TCP_PORT                  : Joi.number().required(),
@@ -22,7 +23,6 @@ import * as Joi from 'joi';
         JWT_REFRESH_EXPIRE_COOKIES: Joi.string().required(),
         JWT_REFRESH_EXPIRE        : Joi.string().required(),
         JWT_DOMEN                 : Joi.string().required(),
-        
         POSTGRES_HOST             : Joi.string().required(),
         POSTGRES_PORT             : Joi.number().required(),
         POSTGRES_DB               : Joi.string().required(),

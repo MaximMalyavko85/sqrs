@@ -18,8 +18,8 @@ async function bootstrap() {
   const app = await NestFactory.create(ApiModule);
   const configService = app.get(ConfigService);
 
-  const PORT = configService.get<string>("HTTP_PORT") || 7979;
-  const SWAGGER_URL = configService.get("SWAGGER_URL") || "api-doc";
+  const PORT = configService.get<string>("HTTP_PORT") || 9000;
+  const SWAGGER_URL = configService.get("SWAGGER_URL") || "api-doc-auth";
 
   app.use(cookieParser());
   app.enableCors(CORS_SETTINGS);
@@ -30,10 +30,10 @@ async function bootstrap() {
     app, 
     new DocumentBuilder()
     .setTitle("BACK SQRS")
-    .setDescription("CRUD posts API")
+    .setDescription("CRUD API AUTH")
     .setVersion("1.0")
     .addTag("API")
-    .addBearerAuth({ type: 'http', schema: 'Bearer', bearerFormat: 'Token' }as SecuritySchemeObject, 'Bearer')
+    .addBearerAuth({ type: 'http', schema: 'Bearer', bearerFormat: 'Token' } as SecuritySchemeObject, 'Bearer')
     .build()
   );
   
