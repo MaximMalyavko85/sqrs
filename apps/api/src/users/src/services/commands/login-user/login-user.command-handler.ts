@@ -6,6 +6,8 @@ import { UserRepository } from "@users/providers";
 import { TokenService } from "@auth/token.service";
 import { SessionAggregate } from "@auth/domain";
 import { SessionRepository } from "@auth/providers";
+import { NotificationAggregate } from "apps/notifications/src/domain";
+import { ChannelProviderService } from "@common/channels/notifications";
 
 @CommandHandler(LoginUserCommand)
 export class LoginCommandHandler implements ICommandHandler<LoginUserCommand, IUserAuth> {
@@ -14,6 +16,7 @@ export class LoginCommandHandler implements ICommandHandler<LoginUserCommand, IU
     private readonly userRepository: UserRepository,
     private readonly sessionRepository: SessionRepository,
     private readonly tokenService: TokenService,
+    private readonly channelProviderService: ChannelProviderService,
   ){}
 
   async execute({ loginUserDto }: LoginUserCommand): Promise<IUserAuth > {
@@ -41,6 +44,16 @@ export class LoginCommandHandler implements ICommandHandler<LoginUserCommand, IU
 
     const sessionAgregate = SessionAggregate.create({userId: _userExist.id, refreshToken});
     await this.sessionRepository.save(sessionAgregate);
+
+    const _newNotification = NotificationAggregate.create({
+      recipientId: _userExist.id.toString(),
+      payload: {
+        message: "You are successfully login on portal. Device: Google Chrome",
+        ...{_userExist}
+      },
+    });
+
+    await this.channelProviderService.createNotifications(_newNotification);
 
     return {
       ..._userAggregate,
