@@ -3,12 +3,6 @@ import { PaginationDto } from "../dtos";
 import { Type, applyDecorators } from "@nestjs/common";
 
 export class ReasponseWithPagination<T> extends PaginationDto {
-  @ApiProperty({description: 'Records limit', type: 'number'})
-  limit: number;
-
-  @ApiProperty({description: 'Records offset', type: 'number'})
-  offset: number;
-
   @ApiProperty({description: 'Records count', type: 'number'})
   total!: number;
 

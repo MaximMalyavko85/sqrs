@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AmqpModule } from './amqp';
 
 
 @Module({
@@ -31,6 +32,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         uri: confiService.get('MONGO_HOST'),
       }),
     }),
+    AmqpModule,
   ]
 })
 export class ProvidersModule {}

@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { APP_FILTER } from '@nestjs/core';
 import { AllexceptionsFilter } from './shared';
 import { ProvidersModule } from './providers/providers.module';
+import { ChannelModule } from './channels/channels.module';
 
 @Module({
   providers: [
@@ -13,7 +14,8 @@ import { ProvidersModule } from './providers/providers.module';
   ],
   imports: [ 
     ProvidersModule,
-    JwtModule.register({ global: true })
+    JwtModule.register({ global: true }),
+    ChannelModule
   ],
   exports: []
 })

@@ -3,12 +3,15 @@ import { BadRequestException } from "@nestjs/common";
 import { ERoles, UserAggregate } from "@users/domain";
 import { CreateUserCommand } from "./create-user.command";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { ChannelProviderService } from "@common/channels/notifications";
+import { NotificationAggregate } from "apps/notifications/src/domain";
 
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler implements ICommandHandler<CreateUserCommand, UserAggregate> {
   constructor(
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
+    private readonly channelProviderService: ChannelProviderService
   ) { }
 
   async execute({ createUserDto }: CreateUserCommand): Promise<UserAggregate> {
@@ -31,6 +34,16 @@ export class CreateUserCommandHandler implements ICommandHandler<CreateUserComma
         });
 
     _createdUser.removePassword();
+
+    const _newNotification = NotificationAggregate.create({
+      recipientId:  _createdUser.id.toString(),
+      payload: {
+        message: "You are successfully registred on portal",
+        ...{_createdUser}
+      },
+    });
+
+    await this.channelProviderService.createNotifications(_newNotification);
 
     return _createdUser;
   }

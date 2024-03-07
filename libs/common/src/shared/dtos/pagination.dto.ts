@@ -8,7 +8,7 @@ export class PaginationDto {
     @Min(0)
     @IsNumber({allowNaN: false, allowInfinity: false})
     @Type(() => Number)
-    offset = 0;
+    offset = 0; 
 
     @ApiProperty({description: 'Number of records', type: 'number'})
     @IsOptional()
