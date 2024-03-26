@@ -6,7 +6,7 @@ import { UserRepository } from "@users/providers";
 import { TokenService } from "@auth/token.service";
 import { SessionAggregate } from "@auth/domain";
 import { SessionRepository } from "@auth/providers";
-import { NotificationAggregate } from "apps/notifications/src/domain";
+import { NotificationAggregate } from '@common/shared/domain';
 import { ChannelProviderService } from "@common/channels/notifications";
 
 @CommandHandler(LoginUserCommand)

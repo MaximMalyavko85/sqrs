@@ -4,7 +4,7 @@ import { ERoles, UserAggregate } from "@users/domain";
 import { CreateUserCommand } from "./create-user.command";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { ChannelProviderService } from "@common/channels/notifications";
-import { NotificationAggregate } from "apps/notifications/src/domain";
+import { NotificationAggregate } from "@common/shared/domain";
 
 
 @CommandHandler(CreateUserCommand)

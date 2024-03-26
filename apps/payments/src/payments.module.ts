@@ -13,7 +13,6 @@ import { join } from "path";
       validationSchema: Joi.object({
         HTTP_PORT                 : Joi.number().required(),
         TCP_PORT                  : Joi.number().required(),
-        RABBITMQ_HOST             : Joi.string().required(),
         POSTGRES_HOST             : Joi.string().required(),
         POSTGRES_PORT             : Joi.number().required(),
         POSTGRES_DB               : Joi.string().required(),

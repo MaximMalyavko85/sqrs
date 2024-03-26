@@ -13,11 +13,12 @@ import { ChannelModule } from "@common/channels/channels.module";
       useFactory: (configService: ConfigService)=> ({
         uri: configService.get<string>('RABBITMQ_HOST'),
         exchanges: AMQ_EXCHANGES,
-        connectionOptions: { wait: false },
-        connectionManagerOptions: {
-          heartbeatIntervalInSeconds: 15, //sec
-          reconnectTimeInSeconds    : 30
-        }
+        connectionInitOptions: { wait: true },
+        
+        // connectionManagerOptions: {
+        //   heartbeatIntervalInSeconds: 15, //sec
+        //   reconnectTimeInSeconds    : 30
+        // }
       })
     }),
     ChannelModule

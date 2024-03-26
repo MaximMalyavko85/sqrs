@@ -3,7 +3,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { Injectable } from "@nestjs/common/decorators";
 import { Logger } from "@nestjs/common/services";
 import { UserAggregate } from "@users/domain";
-import { CreateNotificationDto } from "apps/notifications/src/dto";
+import { CreateNotificationDto } from "@common/shared/dtos";
 
 
 @Injectable()

@@ -2,7 +2,7 @@ import { CreateUserDto } from "@users/dto";
 
 import { AmqpBaseRequest, AmqpBaseResponse, QueueDeclaration } from "../../shared/interfaced";
 import { EXCHANGE_NOTIFICATION } from "../../exchanges";
-import { CreateNotificationDto } from "apps/notifications/src/dto";
+import { CreateNotificationDto } from "@common/shared/dtos";
 
 export namespace CreateNotificationContract {
   export const queue: QueueDeclaration = {

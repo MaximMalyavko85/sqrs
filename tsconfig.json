@@ -32,6 +32,9 @@
       ],
       "@auth/*": [
         "apps/api/src/auth/src/*"
+      ],
+      "@notifications/*": [
+        "apps/notifications/src/*"
       ]
     }
   }
