@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/src/auth.module';
-import { CommonModule, SharedServices } from '@app/common';
+import { CommonModule } from '@app/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { join } from "path";
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -28,8 +28,8 @@ import { join } from "path";
         POSTGRES_DB               : Joi.string().required(),
         POSTGRES_USER             : Joi.string().required(),
         POSTGRES_PASSWORD         : Joi.string().required(),
-      })
-    })
-]
+      }),
+    }),
+  ],
 })
 export class ApiModule {}

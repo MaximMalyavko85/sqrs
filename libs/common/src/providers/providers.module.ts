@@ -5,13 +5,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AmqpModule } from './amqp';
 
-
 @Module({
   imports: [
     ConfigModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      inject : [ConfigService],
+      inject: [ConfigService],
       useFactory: async (confiService: ConfigService) => ({
         synchronize : true,
         logging     : true,
@@ -26,13 +25,13 @@ import { AmqpModule } from './amqp';
       }),
     }),
     MongooseModule.forRootAsync({
-      imports   : [ConfigModule],
-      inject    : [ConfigService],
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: async (confiService: ConfigService) => ({
         uri: confiService.get('MONGO_HOST'),
       }),
     }),
     AmqpModule,
-  ]
+  ],
 })
 export class ProvidersModule {}

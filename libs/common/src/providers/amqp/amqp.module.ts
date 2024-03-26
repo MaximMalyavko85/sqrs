@@ -1,8 +1,12 @@
-import { Global, Module } from "@nestjs/common/decorators";
-import { AmqpConnectionManager, RabbitMQModule, RabbitRpcParamsFactory } from '@golevelup/nestjs-rabbitmq';
-import { ConfigService } from "@nestjs/config";
-import { AMQ_EXCHANGES } from "./exchanges";
-import { ChannelModule } from "@common/channels/channels.module";
+import { Global, Module } from '@nestjs/common/decorators';
+import {
+  AmqpConnectionManager,
+  RabbitMQModule,
+  RabbitRpcParamsFactory
+} from '@golevelup/nestjs-rabbitmq';
+import { ConfigService } from '@nestjs/config';
+import { AMQ_EXCHANGES } from './exchanges';
+import { ChannelModule } from '@common/channels/channels.module';
 
 
 @Global()
@@ -10,23 +14,22 @@ import { ChannelModule } from "@common/channels/channels.module";
   imports: [
     RabbitMQModule.forRootAsync(RabbitMQModule, {
       inject: [ConfigService],
-      useFactory: (configService: ConfigService)=> ({
+      useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('RABBITMQ_HOST'),
         exchanges: AMQ_EXCHANGES,
         connectionInitOptions: { wait: true },
-        
-        // connectionManagerOptions: {
-        //   heartbeatIntervalInSeconds: 15, //sec
-        //   reconnectTimeInSeconds    : 30
-        // }
-      })
+        connectionManagerOptions: {
+          heartbeatIntervalInSeconds: 15, //sec
+          reconnectTimeInSeconds: 30,
+        },
+      }),
     }),
-    ChannelModule
+    ChannelModule,
   ],
   providers: [
-    RabbitRpcParamsFactory, 
-    AmqpConnectionManager // push
+    RabbitRpcParamsFactory,
+    AmqpConnectionManager, // push
   ],
-  exports: [RabbitMQModule]
+  exports: [RabbitMQModule],
 })
-export class AmqpModule{} 
+export class AmqpModule {}
